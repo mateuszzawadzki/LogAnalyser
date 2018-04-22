@@ -1,11 +1,12 @@
 package jobs;
 
 
-import protocol.Protocol;
+import protocol.*;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
+
+import static properties.PropertiesUtils.PROTOCOL;
 
 public class JobsScheduler {
 
@@ -20,11 +21,23 @@ public class JobsScheduler {
     }
 
     private void scheduleDownload(Properties properties) {
-        String protocolProperty = properties.getProperty("protocol").toUpperCase();
+        String protocolProperty = properties.getProperty(PROTOCOL).toUpperCase();
         Protocol protocol = Protocol.valueOf(protocolProperty);
+        ConnectionProtocol connectionProtocol;
         switch (protocol) {
             case FTP:
-
+                connectionProtocol = new FTP();
+                break;
+            case HTTP:
+                connectionProtocol = new HTTP();
+                break;
+            case SFTP:
+                connectionProtocol = new SFTP();
+                break;
+            default:
+                connectionProtocol = null;
+                break;
         }
+        connectionProtocol.downloadLogs();
     }
 }
