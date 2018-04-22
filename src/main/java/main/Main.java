@@ -1,20 +1,17 @@
 package main;
 
+import jobs.JobsScheduler;
+import protocol.Protocol;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -22,28 +19,33 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         initializeProperties();
-        startScheduler();
+        JobsScheduler jobsScheduler = new JobsScheduler(propertiesList);
+        jobsScheduler.scheduleJobs();
     }
 
     private static void initializeProperties() throws Exception {
-        List<File> filesInFolder =
-                Files.walk(Paths.get("config"))
-                .filter(Files::isRegularFile)
-                .map(Path::toFile)
-                .collect(Collectors.toList()
-                );
-
-        for (File file : filesInFolder) {
+        EnumSet<Protocol> availableProtocols = EnumSet.allOf(Protocol.class);
+        Files.walk(Paths.get("src\\main\\resources\\configs"))
+        .filter(Files::isRegularFile)
+        .map(Path::toFile)
+        .forEach(file -> {
             Properties property = new Properties();
-            property.load(new FileInputStream(file));
-            propertiesList.add(property);
-        }
+            try {
+                property.load(new FileInputStream(file));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(validateProtocol(availableProtocols, property)) {
+                propertiesList.add(property);
+            }
+
+        });
     }
-    
-    private static void startScheduler() {
-        for (Properties properties : propertiesList) {
-            
-        }
+
+    private static boolean validateProtocol(EnumSet<Protocol> availableProtocols,
+                                         Properties properties) {
+        String protocolProperty = properties.getProperty("protocol");
+        return availableProtocols.stream().anyMatch(protocol -> protocol.toString().equals(protocolProperty));
     }
 }
 

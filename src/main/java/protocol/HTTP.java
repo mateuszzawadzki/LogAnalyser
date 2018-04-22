@@ -6,7 +6,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class HTTP extends BaseConnection implements ConnectionProtocol {
+public class HTTP extends ConnectionProtocol {
 
     private static final String FILENAME = "temp";
 
