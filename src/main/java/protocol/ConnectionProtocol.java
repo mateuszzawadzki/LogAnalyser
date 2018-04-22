@@ -11,5 +11,5 @@ abstract public class ConnectionProtocol {
         this.properties = properties;
     }
 
-    abstract void downloadLogs() throws Exception;
+    abstract public void downloadLogs();
 }
