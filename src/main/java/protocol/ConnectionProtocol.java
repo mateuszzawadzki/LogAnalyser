@@ -7,7 +7,7 @@ abstract public class ConnectionProtocol {
 
     protected Properties properties;
 
-    void setConfig(Properties properties) {
+    public void setConfig(Properties properties) {
         this.properties = properties;
     }
 

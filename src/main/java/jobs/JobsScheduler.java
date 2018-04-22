@@ -1,11 +1,20 @@
 package jobs;
 
 
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.impl.StdSchedulerFactory;
 import protocol.*;
 
 import java.util.List;
 import java.util.Properties;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+import static properties.PropertiesUtils.INTERVAL;
 import static properties.PropertiesUtils.PROTOCOL;
 
 public class JobsScheduler {
@@ -17,10 +26,16 @@ public class JobsScheduler {
     }
 
     public void scheduleJobs() {
-        propertiesList.forEach(this::scheduleDownload);
+        try {
+            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+            propertiesList.forEach(properties -> scheduleDownload(properties, scheduler));
+            scheduler.start();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void scheduleDownload(Properties properties) {
+    private void scheduleDownload(Properties properties, Scheduler scheduler) {
         String protocolProperty = properties.getProperty(PROTOCOL).toUpperCase();
         Protocol protocol = Protocol.valueOf(protocolProperty);
         ConnectionProtocol connectionProtocol;
@@ -38,6 +53,21 @@ public class JobsScheduler {
                 connectionProtocol = null;
                 break;
         }
-        connectionProtocol.downloadLogs();
+        connectionProtocol.setConfig(properties);
+        JobDetail job = newJob(DownloadLogsJob.class)
+                .build();
+        job.getJobDataMap().put("connectionProtocol", connectionProtocol);
+        Integer interval = Integer.parseInt(properties.getProperty(INTERVAL));
+        Trigger trigger = newTrigger()
+                .startNow()
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(interval)
+                        .repeatForever())
+                .build();
+        try {
+            scheduler.scheduleJob(job, trigger);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 }

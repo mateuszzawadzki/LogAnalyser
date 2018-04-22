@@ -11,7 +11,6 @@ public class HTTP extends ConnectionProtocol {
 
     private static final String FILENAME = "temp";
 
-
     @Override
     public void downloadLogs() {
         String url = properties.getProperty("url");
