@@ -1,4 +1,4 @@
-package jobs;
+package com.agh.jobs;
 
 
 import org.quartz.JobDetail;
@@ -6,7 +6,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-import protocol.*;
+import com.agh.protocol.*;
 
 import java.util.List;
 import java.util.Properties;
@@ -14,8 +14,8 @@ import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
-import static properties.PropertiesUtils.INTERVAL;
-import static properties.PropertiesUtils.PROTOCOL;
+import static com.agh.properties.PropertiesUtils.INTERVAL;
+import static com.agh.properties.PropertiesUtils.PROTOCOL;
 
 public class JobsScheduler {
 

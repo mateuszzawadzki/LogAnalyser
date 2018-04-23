@@ -1,10 +1,10 @@
-package jobs;
+package com.agh.jobs;
 
 
 import org.quartz.*;
-import protocol.ConnectionProtocol;
+import com.agh.protocol.ConnectionProtocol;
 
-public class DownloadLogsJob implements Job{
+public class DownloadLogsJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

@@ -1,7 +1,7 @@
-package main;
+package com.agh.main;
 
-import jobs.JobsScheduler;
-import properties.PropertiesUtils;
+import com.agh.jobs.JobsScheduler;
+import com.agh.properties.PropertiesUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class Main {
     }
 
     private static void initializeProperties(String[] args) throws Exception {
-        Files.walk(Paths.get("src\\main\\resources\\configs"))
+        Files.walk(Paths.get("src\\com.agh.main\\resources\\configs"))
             .filter(Files::isRegularFile)
             .map(Path::toFile)
             .forEach(file -> {

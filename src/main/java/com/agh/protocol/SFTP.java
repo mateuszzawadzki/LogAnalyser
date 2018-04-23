@@ -1,4 +1,4 @@
-package protocol;
+package com.agh.protocol;
 
 
 import com.jcraft.jsch.*;
