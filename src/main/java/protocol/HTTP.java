@@ -9,14 +9,13 @@ import java.nio.file.Paths;
 
 public class HTTP extends ConnectionProtocol {
 
-    private static final String FILENAME = "temp";
-
     @Override
     public void downloadLogs() {
         String url = properties.getProperty("url");
+        System.out.println("Downloading file from " + url);
         try {
             try (InputStream in = URI.create(url).toURL().openStream()) {
-                Files.copy(in, Paths.get(FILENAME));
+                Files.copy(in, Paths.get(properties.getProperty("saveTo")));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class PropertiesUtils {
 
     private static boolean validateProtocol(Properties properties) {
         EnumSet<Protocol> availableProtocols = EnumSet.allOf(Protocol.class);
-        String protocolProperty = properties.getProperty(PROTOCOL);
+        String protocolProperty = properties.getProperty(PROTOCOL).toUpperCase();
         return availableProtocols.stream().anyMatch(protocol -> protocol.toString().equals(protocolProperty));
     }
 }

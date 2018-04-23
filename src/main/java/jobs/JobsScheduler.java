@@ -64,6 +64,7 @@ public class JobsScheduler {
                         .withIntervalInSeconds(interval)
                         .repeatForever())
                 .build();
+        System.out.println("Started job " + protocolProperty + " with interval " + interval);
         try {
             scheduler.scheduleJob(job, trigger);
         } catch (SchedulerException e) {
