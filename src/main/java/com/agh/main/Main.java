@@ -23,7 +23,7 @@ public class Main {
     }
 
     private static void initializeProperties(String[] args) throws Exception {
-        Files.walk(Paths.get("src\\main\\resources\\configs"))
+        Files.walk(Paths.get(args[0]))
             .filter(Files::isRegularFile)
             .map(Path::toFile)
             .forEach(file -> {

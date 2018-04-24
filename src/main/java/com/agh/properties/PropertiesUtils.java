@@ -9,7 +9,7 @@ import java.util.Properties;
 public class PropertiesUtils {
 
     public static final String INTERVAL = "interval";
-    public static final String PROTOCOL = "com/agh/protocol";
+    public static final String PROTOCOL = "protocol";
 
     public static boolean validateProperties(Properties properties) {
         return validateProtocol(properties) && validateInterval(properties);
